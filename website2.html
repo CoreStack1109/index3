@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>All Services Directory</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.8px;
+      opacity: 0.85;
+    }
+
+    /* Filter */
+    .filter-container {
+      background: #fff;
+      padding: 18px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      max-width: 480px;
+      width: 100%;
+      margin-bottom: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #4a4a4a;
+      user-select: none;
+    }
+
+    .filter-container label {
+      white-space: nowrap;
+    }
+
+    select {
+      padding: 10px 15px;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      border: 2px solid #764ba2;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      color: #764ba2;
+      background: #f7f3fc;
+      min-width: 180px;
+    }
+
+    select:hover, select:focus {
+      border-color: #5a3385;
+      box-shadow: 0 0 8px rgba(118, 75, 162, 0.5);
+      background: #f2eefa;
+    }
+
+    /* Services Container */
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    /* Card */
+    .service-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 25px 30px;
+      box-shadow:
+        0 4px 8px rgba(0,0,0,0.1),
+        0 12px 20px rgba(118, 75, 162, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow:
+        0 8px 16px rgba(0,0,0,0.15),
+        0 20px 30px rgba(118, 75, 162, 0.25);
+    }
+
+    /* Icon circle */
+    .icon-circle {
+      position: absolute;
+      top: -25px;
+      right: -25px;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #764ba2, #667eea);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      color: #fff;
+      opacity: 0.15;
+      user-select: none;
+    }
+
+    /* Text content */
+    .service-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      color: #4a3f6f;
+    }
+
+    .service-card p {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      color: #666;
+    }
+
+    .service-card .contact {
+      font-weight: 700;
+      color: #764ba2;
+      letter-spacing: 0.02em;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 10px;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      .filter-container {
+        flex-direction: column;
+        gap: 12px;
+        font-size: 1rem;
+      }
+      .services-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ONE-STOP PLATFORM FOR PROFESSIONAL SERVICES</h1>
+    <p>Select a profession to find professionals near you.</p>
+  </header>
+
+  <div class="filter-container">
+    <label for="profession-select">Choose a Profession:</label>
+    <select id="profession-select">
+      <option value="all">All</option>
+      <option value="electrician">Electrician</option>
+      <option value="doctor">Doctor</option>
+      <option value="plumber">Plumber</option>
+      <option value="carpenter">Carpenter</option>
+      <option value="teacher">Teacher</option>
+      <option value="mechanic">Mechanic</option>
+      <option value="water service">water service</option>
+      <option value="grocery service">grocery service</option>
+      <option value="bakery service">bakery service</option>
+      <option value="medical store">medical store</option>
+      <option value="Fancy store">Fancy store</option>
+    </select>
+  </div>
+
+  <div class="services-container" id="services-container">
+    <!-- Cards injected here -->
+  </div>
+
+  <script>
+    const iconMap = {
+      electrician: "⚡",
+      doctor: "🩺",
+      plumber: "🔧",
+      carpenter: "🪚",
+      teacher: "📚",
+      mechanic: "🔩"
+    };
+
+    const professionals = [
+      {
+        name: "Suresh",
+        profession: "electrician",
+        description: "Expert in residential and commercial electrical systems.",
+        contact: "suresh@example.com",
+      },
+      {
+        name: "Dr.Lakshman Rao",
+        profession: "doctor",
+        description: "General physician with 10 years experience.",
+        contact: "Lakshman@healthmail.com",
+      },
+      {
+        name: "Venkat",
+        profession: "plumber",
+        description: "Specialist in leak repairs and pipe installations.",
+        contact: "venkatesh@plumbing.com",
+      },
+      {
+        name: "shyam",
+        profession: "carpenter",
+        description: "Skilled carpenter for custom furniture and repairs.",
+        contact: "shyam@woodworks.com",
+      },
+      {
+        name: "manjusha",
+        profession: "teacher",
+        description: "Math and science tutor for high school students.",
+        contact: "manju@teachingschool.com",
+      },
+      {
+        name: "Ramesh",
+        profession: "mechanic",
+        description: "Experienced auto mechanic for all car models.",
+        contact: "carlos.martinez@autohelp.com",
+      },
+      {
+        name: "Dr.Kranthi",
+        profession: "doctor",
+        description: "Pediatrician with a caring approach to children’s health.",
+        contact: "sophia.lee@kidshealth.com",
+      },
+      {
+        name: "Suman",
+        profession: "electrician",
+        description: "Certified electrician specializing in smart home systems.",
+        contact: "david.brown@electroservices.com",
+      },
+      {
+        name: "Tejaswini",
+        profession: "Tailor",
+        description: "Custom Fitting, Unmatched Quality.",
+        contact: "tejaswini@tailor.com",
+      },
+      {
+        name: "Rishi",
+        profession: "Water Service",
+        description: "water for homes, commercial establishments, industry. ",
+        contact: "Rishi@waterservice.com",
+      },
+      {
+        name: "udayani",
+        profession: "Grocery Service",
+        description: "Where Healthy Meets Tasty.Everyday Essentials, Exceptional Prices. ",
+        contact: "udayani@groceryservice.com",
+      },
+      {
+       name: "raje",
+       profession:"Bakery Service",
+       description:"One bite and you’ll be full, Crazy with cakes.",
+       contact: "raje@bakeryservice.com",
+       },
+       {
+        name: "jayamma",
+        profession:"Medical Store",
+        description:"Transforming Health, One Supply at a Time.",
+        contact: "jayamma@medicalstore.com",
+       },
+       {
+        name: "lakshmi",
+        profeesion:"Fancy Store",
+        description:"Rise and Shine with new things.",
+        contact: "lakshmifancystore.com",
+       }
+    ];
+
+    const container = document.getElementById('services-container');
+    const select = document.getElementById('profession-select');
+
+    function displayProfessionals(filter) {
+      container.innerHTML = "";
+
+      let filtered = filter === "all" ? professionals : professionals.filter(p => p.profession === filter);
+
+      if(filtered.length === 0) {
+        container.innerHTML = `<p style="color:#fff; font-size:1.2rem; text-align:center; grid-column: 1/-1;">No professionals found for this profession.</p>`;
+        return;
+      }
+
+      filtered.forEach(pro => {
+        const card = document.createElement('div');
+        card.classList.add('service-card');
+
+        card.innerHTML = `
+          <div class="icon-circle">${iconMap[pro.profession] || "👤"}</div>
+          <h3>${pro.name}</h3>
+          <p><strong>Profession:</strong> ${capitalize(pro.profession)}</p>
+          <p>${pro.description}</p>
+          <p class="contact">Contact: ${pro.contact}</p>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function capitalize(text) {
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    // Initial load
+    displayProfessionals("all");
+
+    // Filter event
+    select.addEventListener('change', e => {
+      displayProfessionals(e.target.value);
+    });
+  </script>
+
+</body>
+</html>
